@@ -1,7 +1,9 @@
 import { For, Show, createEffect, createSignal } from "solid-js"
 import style from './Paginator.module.css'
 
+
 export default function Paginator (props) {
+
     // keep track of how many pages there should be
     const [ pages, setPages ] = createSignal([])
     createEffect(() => {
@@ -9,7 +11,7 @@ export default function Paginator (props) {
     })
 
     const [ currentPage, setCurrentPage ] = createSignal(0)
-    const [ cursor, setCursor ] = createSignal(0) // keeps track of the starting item of the current page
+    const [ cursor, setCursor ] = createSignal(0) // keeps track of the first item of the current page
 
     const [ slice, setSlice ] = createSignal([])
     createEffect(() => {
@@ -19,7 +21,6 @@ export default function Paginator (props) {
     const handlePageChange = (evt, targetPage) => {
         evt.preventDefault()
         const page = parseInt(targetPage)
-        console.log(page)
         setCurrentPage(page)
         setCursor(props.pageSize * (currentPage()))
     }
@@ -33,27 +34,65 @@ export default function Paginator (props) {
     
     return (
         <div class={style.wrapper}>
-            <h2 class={style.title}>Paginator</h2>
+            <h2 class={style.title}>{props.title}</h2>
+
+            {/* Add additional controls above the list e.g. a filter control */}
+            {props.children} 
+            
+            {/* page controls */}
+            <div class={style.controls}>
+                <button 
+                    class={style.btn} 
+                    disabled={currentPage() === 0} 
+                    onClick={() => {setCurrentPage(0); setCursor(props.pageSize * (currentPage()))}}>
+                        {`<<`}
+                </button>
+                <button 
+                    class={style.btn} 
+                    disabled={currentPage() === 0} 
+                    onClick={evt => handleIncrements(evt, 'down')}>
+                        {`<`}
+                </button>
+
+                <select 
+                    class={style.select} 
+                    value={currentPage()} 
+                    onChange={e => handlePageChange(e, e.target.value)}>
+                    <For each={pages()}>
+                        {page => 
+                            <option 
+                                class={style.select} 
+                                value={page}>
+                                    {`${page + 1} of ${pages().length}`}
+                            </option>}
+                    </For>
+                </select>
+
+                <button 
+                    class={style.btn} 
+                    disabled={currentPage() === pages().length -1} 
+                    onClick={evt => handleIncrements(evt, 'up')}>
+                        {`>`}
+                </button>
+                <button 
+                    class={style.btn} 
+                    disabled={currentPage() === pages().length -1} 
+                    onClick={() => {setCurrentPage(pages().length -1); setCursor(props.pageSize * (currentPage()))}}>
+                        {`>>`}
+                </button>
+            </div>
+            
+            {/* The list of items */}
             <div class={style.list}>
                 <For each={slice()}>
                     {item => 
-                        <div class={style.item} onClick={() => props.command(item)}>{item.name}</div>
+                        <div 
+                            class={style.item} 
+                            onClick={() => props.command(item)}>
+                            <p>{`${item.name} (${item.level})`}</p>
+                        </div>
                     }
                 </For>
-            </div>
-            <div class={style.controls}>
-                <button class={style.btn} disabled={currentPage() === 0} onClick={() => {setCurrentPage(0); setCursor(props.pageSize * (currentPage()))}}>{`<<`}</button>
-                <button class={style.btn} disabled={currentPage() === 0} onClick={evt => handleIncrements(evt, 'down')}>{`<`}</button>
-                <select class={style.select} value={currentPage()} onChange={e => handlePageChange(e, e.target.value)}>
-                    <For each={pages()}>
-                        {page => <option class={style.select} value={page}>{`${page + 1} of ${pages().length}`}</option>}
-                    </For>
-                </select>
-                {/* <For each={pages()}>
-                    {page => <button class={currentPage() === page ? style.btnSelected : style.btn} onClick={evt => handlePageChange(evt, page)}>{page + 1}</button>}
-                </For> */}
-                <button class={style.btn} disabled={currentPage() === pages().length -1} onClick={evt => handleIncrements(evt, 'up')}>{`>`}</button>
-                <button class={style.btn} disabled={currentPage() === pages().length -1} onClick={() => {setCurrentPage(pages().length -1); setCursor(props.pageSize * (currentPage()))}}>{`>>`}</button>
             </div>
         </div>
     )

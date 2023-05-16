@@ -1,16 +1,54 @@
 import { createEffect, createSignal, onMount } from 'solid-js';
 import styles from './App.module.css';
 import monsterFile from './data/monster-file.json'
+import Filter from './components/Filter';
 import Paginator from './components/Paginator';
 
 function App() {
   const [ monsters, setMonsters ] = createSignal([])
-  const [ pageSize, setPageSize ] = createSignal(10)
+  const [ filteredMonsters, setFilteredMonsters ] = createSignal([])
+  createEffect(() => console.log(filteredMonsters()))
+
   const [ monsterSlice, setMonsterSlice ] = createSignal(10)
   createEffect(() => {
     setMonsters(monsterFile.sort((a,b) => a.name > b.name).slice(0, monsterSlice()))
     console.log(monsterFile)
   })
+  const filterOptions = {
+    search: '',
+    toggles: [],
+    selects: [],
+    numbers: [
+      {
+        label: 'Min Level',
+        order: 1,
+        key: 'level',
+        max: 25,
+        min: -1,
+        value: -1,
+        operator: '>='
+      },
+      {
+        label: 'Max Level',
+        order: 2,
+        key: 'level',
+        max: 25,
+        min: -1,
+        value: 25,
+        operator: '<='
+      },
+      {
+        label: 'Min HP',
+        order: 3,
+        key: 'hp',
+        max: 1000,
+        min: 0,
+        value: 0,
+        operator: '>='
+      }
+    ]
+  }
+  const [ filters, setFilters ] = createSignal(filterOptions)
 
   const handleItemSelect = (item) => {
     console.log(item)
@@ -19,12 +57,12 @@ function App() {
 
   return (
     <div class={styles.App}>
-      <label htmlFor="pagesize">Page Size </label>
-      <input type="number" name="" id="pagesize" value={pageSize()} onChange={e => setPageSize(e.target.value)} />
       <label htmlFor="monstersize">Monster Slice </label>
       <input type="number" name="" id="monstersize" value={monsterSlice()} onChange={e => setMonsterSlice(parseInt(e.target.value))} />
 
-      <Paginator list={monsters()} pageSize={pageSize()} command={handleItemSelect}></Paginator>
+      <Paginator title={"Paginator - I'll Be Back"} list={filteredMonsters()} pageSize={10} command={handleItemSelect}>
+        <Filter search={true} filters={filters} setFilters={setFilters} list={monsters()} filteredlist={setFilteredMonsters} />
+      </Paginator>
     </div>
   );
 }

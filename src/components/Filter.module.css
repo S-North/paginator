@@ -1,0 +1,38 @@
+.wrapper {
+    padding: 0.5rem;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    border-radius: 3px;
+    background-color: hsl(216, 98%, 52%);
+    color: ghostwhite;
+    margin-bottom: 0.5rem;
+}
+
+.wrapper summary {
+    cursor: pointer;
+}
+
+.controls {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.searchbox {
+    padding: 0.2rem 0.3rem;
+}
+
+.numbers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 1rem;
+}
+
+.numberWrapper {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    align-items: baseline;
+    background-color: hsl(216, 98%, 45%);
+    padding: 0.3rem
+}

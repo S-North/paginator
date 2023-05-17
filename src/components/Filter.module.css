@@ -8,6 +8,7 @@
 }
 
 .wrapper summary {
+    font-size: 0.9rem;
     cursor: pointer;
 }
 
@@ -19,7 +20,7 @@
 }
 
 .searchbox {
-    padding: 0.2rem 0.3rem;
+    padding: 0.3rem 0.3rem;
 }
 
 .sorttoggles {
@@ -34,6 +35,7 @@
 }
 
 .sortChip {
+    font-size: 0.9rem;
     display: flex;
     gap: 0.3rem;
     align-items: center;
@@ -42,6 +44,7 @@
 }
 
 .sortChipActive {
+    font-size: 0.9rem;
     display: flex;
     gap: 0.3rem;
     align-items: center;
@@ -62,6 +65,7 @@
 }
 
 .numberWrapper {
+    font-size: 0.8rem;
     display: flex;
     gap: 0.5rem;
     justify-content: space-between;

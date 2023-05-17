@@ -1,15 +1,16 @@
-import { For, Show, createEffect, createSignal, onMount } from 'solid-js'
+import { For, Show, createEffect, onMount } from 'solid-js'
 import style from './Filter.module.css'
 import iconUp from '../assets/up.png'
 import iconDown from '../assets/down.png'
 
 export default function Filter (props) {
+    setTimeout(() => {
+        const searchbox = document.getElementById('searchbox')
+        // console.log(searchbox)
+        searchbox.focus()
+    }, 100)
     
-    // createEffect(() => {
-    //     console.log(props.filters())
-    // })
-    
-    // calcualte and apply filters when they change
+    // calculate and apply filters when they change
     createEffect(() => {
         let tempList = [...props.list]
         
@@ -64,7 +65,7 @@ export default function Filter (props) {
     }
 
     return (
-        <details class={style.wrapper}>
+        <details class={style.wrapper} open>
             <summary>Filters</summary>
             <div class={style.controls}>
                 {/* search input */}
@@ -73,7 +74,7 @@ export default function Filter (props) {
                         class={style.searchbox}
                         type="text" 
                         name="" 
-                        id="" 
+                        id="searchbox" 
                         placeholder='Search'
                         value={props.filters().search}
                         onInput={e => props.setFilters({...props.filters(), search: e.target.value})} />
@@ -101,9 +102,10 @@ export default function Filter (props) {
                 <div class={style.numbers}>
                     <For each={props.filters().numbers.sort((a,b) => a.order > b.order)}>
                         {elem => 
-                            <div class={style.numberWrapper}>
+                            <form class={style.numberWrapper}>
                                 <label htmlFor={elem.label}>{elem.label}</label>
                                 <input
+                                    required
                                     style={{"max-width": "3rem"}}
                                     type="number" 
                                     name={elem.label} 
@@ -122,7 +124,7 @@ export default function Filter (props) {
                                             ]
                                         })}
                                     } />
-                            </div>
+                            </form>
                         }
                     </For>
                 </div>

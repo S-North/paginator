@@ -11,7 +11,8 @@ function App() {
 
   const [ monsterSlice, setMonsterSlice ] = createSignal(10)
   createEffect(() => {
-    setMonsters(monsterFile.sort((a,b) => a.name > b.name).slice(0, monsterSlice()))
+    // setMonsters(monsterFile.sort((a,b) => a.name > b.name).slice(0, monsterSlice()))
+    setMonsters(monsterFile.sort((a,b) => a.name > b.name))
     console.log(monsterFile)
   })
   const filterOptions = {
@@ -48,15 +49,6 @@ function App() {
         min: -1,
         value: 25,
         operator: '<='
-      },
-      {
-        label: 'Min HP',
-        order: 3,
-        key: 'hp',
-        max: 1000,
-        min: 0,
-        value: 0,
-        operator: '>='
       }
     ]
   }

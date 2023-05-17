@@ -22,6 +22,39 @@
     padding: 0.2rem 0.3rem;
 }
 
+.sorttoggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.sortChip {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+    padding: 0.2rem 0.3rem;
+    border-radius: 0.3rem;
+}
+
+.sortChipActive {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+    padding: 0.2rem 0.3rem;
+    border-radius: 0.3rem;
+    background-color: hsl(216, 98%, 45%);
+}
+
+.sortIcon {
+    max-width: 1rem;
+    aspect-ratio: 1;
+}
+
 .numbers {
     display: grid;
     grid-template-columns: 1fr 1fr;

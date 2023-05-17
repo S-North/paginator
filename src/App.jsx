@@ -16,6 +16,18 @@ function App() {
   })
   const filterOptions = {
     search: '',
+    sort: [
+      {
+        key: 'name',
+        active: true,
+        desc: true
+      },
+      {
+        key: 'level',
+        active: false,
+        desc: true
+      }
+    ],
     toggles: [],
     selects: [],
     numbers: [

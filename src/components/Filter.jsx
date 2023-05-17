@@ -6,17 +6,26 @@ import iconDown from '../assets/down.png'
 export default function Filter (props) {
     setTimeout(() => {
         const searchbox = document.getElementById('searchbox')
-        // console.log(searchbox)
         searchbox.focus()
     }, 100)
+
+    // TODO: traits
+    createEffect(() => {
+        console.log(props.list)
+        const traits = {}
+        props.list.forEach(m => {
+            m.traits.forEach(t => {
+                if (!traits[t.name]) traits[t.name] = t.description
+            })
+        })
+        console.log(traits)
+    })
     
     // calculate and apply filters when they change
     createEffect(() => {
         let tempList = [...props.list]
         
         if (props?.list && Array.isArray(props?.list)) {
-            // console.log('filter monsters')
-            // console.log(props.filters().search)
             tempList = tempList.filter(item => item.name.toLowerCase().includes(props.filters().search.toLowerCase()))
         }
         
@@ -24,7 +33,6 @@ export default function Filter (props) {
             if (elem.operator === '>=') tempList = tempList.filter(item => item[elem.key] >= elem.value)
             if (elem.operator === '<=') tempList = tempList.filter(item => item[elem.key] <= elem.value)
         });
-        // console.log(props.filters().numbers)
         const activeSort = props.filters().sort.filter(elem => elem.active)[0]
         console.log(activeSort)
         if (activeSort.desc) tempList = tempList.sort((a,b) => a[activeSort.key] > b[activeSort.key])
@@ -84,10 +92,10 @@ export default function Filter (props) {
                 <div class={style.sorttoggles}>
                     <For each={props.filters().sort.sort((a,b) => a.key > b.key)}>
                         {sort =>
-                            <div class={sort.active ? style.sortChipActive : style.sortChip}>
+                            <div class={sort.active ? style.sortChipActive : style.sortChip} onClick={e => handleSort(e, sort)}>
                                 <div
                                     class={style.link}
-                                    onClick={e => handleSort(e, sort)}>
+                                    >
                                         {sort.key}
                                 </div>
                                 <Show when={sort.active}>
